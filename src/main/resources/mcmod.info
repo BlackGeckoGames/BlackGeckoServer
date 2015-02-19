@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "blackgeckoserver",
+  "name": "BlackGecko Server Plugin",
+  "description": "A plugin for a minigame server",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Jacky2611"],
+  "credits": "The Forge and FML guys, and Jacky2611",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
