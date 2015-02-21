@@ -35,15 +35,7 @@ public class BGSPlayer implements IExtendedEntityProperties{
 
 	// Declare other variables you want to add here
 	private GameMode gameMode;
-	
-	
-	public GameMode getGameMode() {
-		return gameMode;
-	}
 
-	public void setGameMode(GameMode gameMode) {
-		this.gameMode = gameMode;
-	}
 
 	private int experience;
 	
@@ -149,7 +141,15 @@ public class BGSPlayer implements IExtendedEntityProperties{
 		this.experience = experience;
 	}
 
+	
+	
+	public GameMode getGameMode() {
+		return gameMode;
+	}
 
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
 
 
 }

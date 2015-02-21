@@ -86,21 +86,18 @@ public class BlackGeckoEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event){
-		
 	
 		EntityPlayer player = event.entityPlayer;
 		BGSPlayer bgsPlayer = BGSPlayer.get(player);
 
-		System.out.println("Your xp is: " + bgsPlayer.getExperience());
-		
-		bgsPlayer.setExperience(bgsPlayer.getExperience()+1);
+
 		
 		switch(bgsPlayer.getGameMode()){
-			
-		case LOBBY:
-		default:
-			LobbyEvent.onPlayerInteractEvent(event);
-	
+			case LOBBY:
+			default:
+				LobbyEvent.onPlayerInteractEvent(event);
+				break;
+		
 		}
 		
 		
@@ -116,10 +113,11 @@ public class BlackGeckoEventHandler {
 		switch(bgsPlayer.getGameMode()){
 			case SKYBATTLE:
 				SkyBattleEvents.onPlayerBreakEvent(event);
-				
+				break;
 			case LOBBY:
 			default:
 				LobbyEvent.onPlayerBreakEvent(event);
+				break;
 		
 		}
 		

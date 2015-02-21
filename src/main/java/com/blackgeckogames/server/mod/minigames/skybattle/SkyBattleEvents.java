@@ -1,5 +1,7 @@
 package com.blackgeckogames.server.mod.minigames.skybattle;
 
+import com.blackgeckogames.server.mod.data.BGSPlayer;
+
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
@@ -8,7 +10,15 @@ public class SkyBattleEvents {
 	public static void onPlayerBreakEvent(BreakEvent event) {
 		
 		
-		if(event.world.getBlockState(event.pos).getBlock() != Blocks.sandstone || event.world.getBlockState(event.pos).getBlock() != Blocks.end_stone || event.world.getBlockState(event.pos).getBlock() != Blocks.obsidian  || event.world.getBlockState(event.pos).getBlock() != Blocks.beacon){
+		
+		/*schoener waere:
+		 * 
+		 * 
+		 * Block block = event.world.getBlockState(event.pos).getBlock();
+		 * 
+		 * if(block != Blocks.XXX || ...)
+		 */
+		if(event.world.getBlockState(event.pos).getBlock() != Blocks.sandstone && event.world.getBlockState(event.pos).getBlock() != Blocks.end_stone && event.world.getBlockState(event.pos).getBlock() != Blocks.obsidian  && event.world.getBlockState(event.pos).getBlock() != Blocks.beacon){
 			
 			System.out.println("You are not allowed to destroy this block!");
 			event.setCanceled(true);	
@@ -19,7 +29,7 @@ public class SkyBattleEvents {
 			
 			String Team = "";
 			
-			//Abfrage welcher TeamBeacon zerstört wurde
+			//Abfrage welcher TeamBeacon zerstï¿½rt wurde
 			
 			
 			System.out.println("You have destroyed the bed from team: " + Team);
