@@ -103,8 +103,16 @@ public class BlackGeckoEventHandler {
 		EntityPlayer player = event.getPlayer();
 		BGSPlayer bgsPlayer = BGSPlayer.get(player);
 		
+		switch(bgsPlayer.getGameMode()){
+			case SKYBATTLE:
+				SkyBattleEvents.onPlayerBreakEvent(event);
+				
+			case LOBBY:
+			default:
+				LobbyEvent.onPlayerBreakEvent(event);
 		
-		SkyBattleEvents.onPlayerBreakEvent(event);
+		}
+		
 
 		
 	}

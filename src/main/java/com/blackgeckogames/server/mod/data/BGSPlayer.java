@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.blackgeckogames.server.mod.BlackGeckoServer;
+import com.blackgeckogames.server.mod.minigames.GameMode;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +34,17 @@ public class BGSPlayer implements IExtendedEntityProperties{
 	private final EntityPlayer player;
 
 	// Declare other variables you want to add here
+	private GameMode gameMode;
 	
+	
+	public GameMode getGameMode() {
+		return gameMode;
+	}
+
+	public void setGameMode(GameMode gameMode) {
+		this.gameMode = gameMode;
+	}
+
 	private int experience;
 	
 	
@@ -52,6 +63,7 @@ public class BGSPlayer implements IExtendedEntityProperties{
 
 		//Set Starting values
 		this.experience=0;
+		this.gameMode=GameMode.LOBBY;
 		
 	}
 
