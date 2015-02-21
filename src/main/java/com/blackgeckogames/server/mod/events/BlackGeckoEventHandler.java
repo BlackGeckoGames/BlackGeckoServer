@@ -96,5 +96,16 @@ public class BlackGeckoEventHandler {
 		
 	}
 	
+	@SubscribeEvent
+	public void PlayerBreakEvent(net.minecraftforge.event.world.BlockEvent.BreakEvent event){
+		
+		EntityPlayer player = event.getPlayer();
+		BGSPlayer bgsPlayer = BGSPlayer.get(player);
+		
+		System.out.println("You are not allowed to destroye this block!");
+		
+		
+	}
+	
 
 }
