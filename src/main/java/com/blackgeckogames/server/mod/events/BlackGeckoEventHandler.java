@@ -4,9 +4,7 @@ import com.blackgeckogames.server.mod.BlackGeckoServer;
 import com.blackgeckogames.server.mod.data.BGSPlayer;
 import com.blackgeckogames.server.mod.minigames.skybattle.SkyBattleEvents;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -117,6 +115,27 @@ public class BlackGeckoEventHandler {
 			case LOBBY:
 			default:
 				LobbyEvent.onPlayerBreakEvent(event);
+				break;
+		
+		}
+		
+
+		
+	}
+	
+	@SubscribeEvent
+	public void onPlayerPlaceEvent(net.minecraftforge.event.world.BlockEvent.PlaceEvent event){
+		
+		EntityPlayer player = event.player;
+		BGSPlayer bgsPlayer = BGSPlayer.get(player);
+		
+		switch(bgsPlayer.getGameMode()){
+			case SKYBATTLE:
+				SkyBattleEvents.onPlayerPlaceEvent(event);
+				break;
+			case LOBBY:
+			default:
+				LobbyEvent.onPlayerPlaceEvent(event);
 				break;
 		
 		}
