@@ -80,8 +80,7 @@ public class BGSPlayer implements IExtendedEntityProperties{
 		NBTTagCompound properties = new NBTTagCompound();
 
 		//save player data here:
-		//properties.setBoolean("name", true);
-		 
+		 properties.setInteger("xp", this.experience);
 		
 		compound.setTag(EXT_PROP_NAME, properties);
 	}
