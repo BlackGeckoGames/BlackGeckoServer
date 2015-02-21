@@ -4,7 +4,9 @@ import com.blackgeckogames.server.mod.BlackGeckoServer;
 import com.blackgeckogames.server.mod.data.BGSPlayer;
 import com.blackgeckogames.server.mod.minigames.skybattle.SkyBattleEvents;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -92,6 +94,14 @@ public class BlackGeckoEventHandler {
 		System.out.println("Your xp is: " + bgsPlayer.getExperience());
 		
 		bgsPlayer.setExperience(bgsPlayer.getExperience()+1);
+		
+		switch(bgsPlayer.getGameMode()){
+			
+		case LOBBY:
+		default:
+			LobbyEvent.onPlayerInteractEvent(event);
+	
+		}
 		
 		
 		
