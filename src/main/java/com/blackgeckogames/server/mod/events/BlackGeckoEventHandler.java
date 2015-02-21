@@ -2,6 +2,7 @@ package com.blackgeckogames.server.mod.events;
 
 import com.blackgeckogames.server.mod.BlackGeckoServer;
 import com.blackgeckogames.server.mod.data.BGSPlayer;
+import com.blackgeckogames.server.mod.minigames.skybattle.SkyBattleEvents;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +57,7 @@ public class BlackGeckoEventHandler {
 
 	
 	@SubscribeEvent
-	public void onlivingDeath(LivingDeathEvent event){
+	public void onLivingDeath(LivingDeathEvent event){
 		// we only want to save data for players (most likely, anyway)
 		
 		
@@ -82,7 +83,7 @@ public class BlackGeckoEventHandler {
 	
 	
 	@SubscribeEvent
-	public void PlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event){
+	public void onPlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event){
 		
 	
 		EntityPlayer player = event.entityPlayer;
@@ -97,13 +98,14 @@ public class BlackGeckoEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void PlayerBreakEvent(net.minecraftforge.event.world.BlockEvent.BreakEvent event){
+	public void onPlayerBreakEvent(net.minecraftforge.event.world.BlockEvent.BreakEvent event){
 		
 		EntityPlayer player = event.getPlayer();
 		BGSPlayer bgsPlayer = BGSPlayer.get(player);
 		
-		System.out.println("You are not allowed to destroye this block!");
 		
+		SkyBattleEvents.onPlayerBreakEvent(event);
+
 		
 	}
 	
