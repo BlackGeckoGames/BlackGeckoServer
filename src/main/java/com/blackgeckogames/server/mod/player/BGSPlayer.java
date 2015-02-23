@@ -1,17 +1,14 @@
-package com.blackgeckogames.server.mod.data;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.blackgeckogames.server.mod.BlackGeckoServer;
-import com.blackgeckogames.server.mod.minigames.GameMode;
+package com.blackgeckogames.server.mod.player;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+
+import com.blackgeckogames.server.mod.BlackGeckoServer;
+import com.blackgeckogames.server.mod.minigames.GameMode;
+import com.blackgeckogames.server.mod.minigames.GameMode.EnumGameMode;
 
 public class BGSPlayer implements IExtendedEntityProperties{
 	/*
@@ -34,7 +31,7 @@ public class BGSPlayer implements IExtendedEntityProperties{
 	private final EntityPlayer player;
 
 	// Declare other variables you want to add here
-	private GameMode gameMode;
+	private EnumGameMode gameMode;
 
 
 	private int experience;
@@ -55,7 +52,7 @@ public class BGSPlayer implements IExtendedEntityProperties{
 
 		//Set Starting values
 		this.experience=0;
-		this.gameMode=GameMode.LOBBY;
+		this.gameMode=EnumGameMode.LOBBY;
 		
 	}
 
@@ -143,11 +140,11 @@ public class BGSPlayer implements IExtendedEntityProperties{
 
 	
 	
-	public GameMode getGameMode() {
+	public EnumGameMode getGameMode() {
 		return gameMode;
 	}
 
-	public void setGameMode(GameMode gameMode) {
+	public void setGameMode(EnumGameMode gameMode) {
 		this.gameMode = gameMode;
 	}
 

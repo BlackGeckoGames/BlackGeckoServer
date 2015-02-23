@@ -1,1 +1,3 @@
-*!/src!/build.gradle!/eula.txt!/.gitignore!/gradlew!/gradlew.bat!/gradle.DS_Store
+*!/src!/build.gradle!/eula.txt!/.gitignore!/gradlew!/gradlew.bat!/gradle
+!/world/BlackGeckoServer/MAPS
+.DS_Store
