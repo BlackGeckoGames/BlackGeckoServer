@@ -1,11 +1,12 @@
 #THIS IS A PROOF OF CONCEPT PROJECT
 
 
-# TO-DO LIST:
+TO-DO LIST:
 
-Make dimensionsystem dynamic on demand
-remove unused classes, clean up code
-fix Scoreboard and name tags
-fix PlayerData
-add DataBase
+
+Make dimensionsystem dynamic<br>
+remove unused classes, clean up code<br>
+fix Scoreboard and name tags<br>
+fix PlayerData<br>
+add DataBase<br>
 finish SkyBattle
