@@ -7,8 +7,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
 import com.blackgeckogames.server.mod.BlackGeckoServer;
-import com.blackgeckogames.server.mod.minigames.GameMode;
-import com.blackgeckogames.server.mod.minigames.GameMode.EnumGameMode;
+import com.blackgeckogames.server.mod.gamemode.GameMode;
+import com.blackgeckogames.server.mod.gamemode.GameMode.EnumGameMode;
 
 public class BGSPlayer implements IExtendedEntityProperties{
 	/*

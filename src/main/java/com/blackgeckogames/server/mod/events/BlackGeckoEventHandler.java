@@ -8,11 +8,14 @@ import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
 import com.blackgeckogames.server.mod.BlackGeckoServer;
 import com.blackgeckogames.server.mod.dimension.teleporter.TeleporterPosition;
-import com.blackgeckogames.server.mod.minigames.skybattle.SkyBattleEvent;
+import com.blackgeckogames.server.mod.gamemode.Lobby;
+import com.blackgeckogames.server.mod.gamemode.skybattle.SkyBattle;
+import com.blackgeckogames.server.mod.gamemode.skybattle.SkyBattleEvent;
 import com.blackgeckogames.server.mod.player.BGSPlayer;
 
 public class BlackGeckoEventHandler {
@@ -54,11 +57,15 @@ public class BlackGeckoEventHandler {
 				bgsPlayer.loadNBTData(playerData);
 				System.out.println("loading data");
 			}
-			
+
+			if(BlackGeckoServer.hasGame(event.world.provider.getDimensionId())){
+				BlackGeckoServer.getGame(event.world.provider.getDimensionId()).joinPlayer(player);
+			}
 			
 			
 			
 		}
+		
 		
 		
 	}	
@@ -87,51 +94,45 @@ public class BlackGeckoEventHandler {
 			
 			
 			
-			switch(bgsPlayer.getGameMode()){
-			case SKY_BATTLE:
-				SkyBattleEvent.onLivingDeath(event);
-				break;
-			case LOBBY:
-			default:
-				LobbyEvent.onLivingDeath(event);
-				break;
+
+			if(BlackGeckoServer.hasGame(event.entity.worldObj.provider.getDimensionId())){
+				if(BlackGeckoServer.getGame(event.entity.worldObj.provider.getDimensionId()) instanceof SkyBattle){
+					SkyBattleEvent.onLivingDeath(event);
+				} else if(BlackGeckoServer.getGame(event.entity.worldObj.provider.getDimensionId()) instanceof Lobby){
+					LobbyEvent.onLivingDeath(event);
+				}
+
+			}
+
 		
-		}
+		
 		}
 	}
 
 	@SubscribeEvent
 	public void onServerChatEvent(ServerChatEvent event){
-		EntityPlayer player = event.player;
-		BGSPlayer bgsPlayer = BGSPlayer.get(player);
+		if(BlackGeckoServer.hasGame(event.player.worldObj.provider.getDimensionId())){
+			if(BlackGeckoServer.getGame(event.player.worldObj.provider.getDimensionId()) instanceof SkyBattle){
 
-
-		
-		switch(bgsPlayer.getGameMode()){
-			case LOBBY:
+			} else if(BlackGeckoServer.getGame(event.player.worldObj.provider.getDimensionId()) instanceof Lobby){
 				LobbyEvent.onServerChatEvent(event);
-				break;
-		
+			}
+
 		}
 	}
 	
 	@SubscribeEvent
 	public void onCommandEvent(CommandEvent event){
 		if(event.sender instanceof EntityPlayer){
-			EntityPlayer player = (EntityPlayer) event.sender;
-			BGSPlayer bgsPlayer = BGSPlayer.get(player);
-	
-			
-			switch(bgsPlayer.getGameMode()){
-				case SKY_BATTLE:
+			EntityPlayer player = (EntityPlayer)event.sender;
+			if(BlackGeckoServer.hasGame(player.worldObj.provider.getDimensionId())){
+				if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof SkyBattle){
 					SkyBattleEvent.onCommandEvent(event);
-					break;
-				case LOBBY:
-				default:
+				} else if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof Lobby){
 					LobbyEvent.onCommandEvent(event);
-					break;
+				}
+
 			}
-	
 	}
 	}
 	
@@ -140,17 +141,12 @@ public class BlackGeckoEventHandler {
 	public void onPlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event){
 	
 		EntityPlayer player = event.entityPlayer;
-		BGSPlayer bgsPlayer = BGSPlayer.get(player);
-
-
-		
-		switch(bgsPlayer.getGameMode()){
-			case SKY_BATTLE:
+		if(BlackGeckoServer.hasGame(player.worldObj.provider.getDimensionId())){
+			if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof SkyBattle){
 				SkyBattleEvent.onPlayerInteractEvent(event);
-				break;
-			case LOBBY:
+			} else if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof Lobby){
 				LobbyEvent.onPlayerInteractEvent(event);
-				break;
+			}
 		
 		}
 		
@@ -162,21 +158,41 @@ public class BlackGeckoEventHandler {
 	public void onPlayerBreakEvent(net.minecraftforge.event.world.BlockEvent.BreakEvent event){
 		
 		EntityPlayer player = event.getPlayer();
-		BGSPlayer bgsPlayer = BGSPlayer.get(player);
-		
-		switch(bgsPlayer.getGameMode()){
-			case SKY_BATTLE:
+
+		if(BlackGeckoServer.hasGame(player.worldObj.provider.getDimensionId())){
+			if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof SkyBattle){
 				SkyBattleEvent.onPlayerBreakEvent(event);
-				break;
-			case LOBBY:
-			default:
+			} else if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof Lobby){
 				LobbyEvent.onPlayerBreakEvent(event);
-				break;
-		
+			}
+
 		}
 		
 
 		
+	}
+	
+	@SubscribeEvent
+	public void onPlayerPlaceEvent(net.minecraftforge.event.world.BlockEvent.PlaceEvent event){
+		
+		EntityPlayer player = event.player;
+
+		if(BlackGeckoServer.hasGame(player.worldObj.provider.getDimensionId())){
+			if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof SkyBattle){
+				SkyBattleEvent.onPlayerPlaceEvent(event);
+			} else if(BlackGeckoServer.getGame(player.worldObj.provider.getDimensionId()) instanceof Lobby){
+				LobbyEvent.onPlayerPlaceEvent(event);
+			}
+
+		
+		}	
+	}
+	
+	@SubscribeEvent
+	public void onPlayerChangedDimensionEvent(PlayerChangedDimensionEvent event){
+		if(BlackGeckoServer.hasGame(event.fromDim)){
+			BlackGeckoServer.getGame(event.fromDim).disconnectPlayer(event.player);
+		}
 	}
 	
 

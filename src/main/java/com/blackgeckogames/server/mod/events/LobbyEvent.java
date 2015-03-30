@@ -1,5 +1,10 @@
 package com.blackgeckogames.server.mod.events;
 
+import java.awt.Color;
+
+import org.apache.commons.lang3.StringUtils;
+
+import net.minecraft.block.state.BlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
@@ -11,12 +16,13 @@ import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.fml.client.config.GuiConfigEntries.ChatColorEntry;
 
 import com.blackgeckogames.server.mod.BlackGeckoServer;
 import com.blackgeckogames.server.mod.dimension.teleporter.TeleporterPosition;
-import com.blackgeckogames.server.mod.minigames.GameMode;
-import com.blackgeckogames.server.mod.minigames.GameMode.EnumGameMode;
-import com.blackgeckogames.server.mod.player.BGSPlayer;
+import com.blackgeckogames.server.mod.gamemode.GameMode;
+import com.blackgeckogames.server.mod.gamemode.GameMode.EnumGameMode;
 
 public class LobbyEvent {
 
@@ -26,62 +32,126 @@ public class LobbyEvent {
 		}
 	}
 	
-	public static void onPlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event){
-		BGSPlayer bgsPlayer = BGSPlayer.get(event.entityPlayer);
+	public static void onPlayerInteractEvent(net.minecraftforge.event.entity.player.PlayerInteractEvent event) {
+		if (event.world.getBlockState(event.pos).getBlock() == Blocks.wall_sign) {
+			TileEntity tileEntity = event.world.getTileEntity(event.pos);
+
+			if (tileEntity != null && tileEntity instanceof TileEntitySign) {
+
+				IChatComponent line1 = ((TileEntitySign) tileEntity).signText[0];
+				IChatComponent line2 = ((TileEntitySign) tileEntity).signText[1];
+				IChatComponent line3 = ((TileEntitySign) tileEntity).signText[2];
+				IChatComponent line4 = ((TileEntitySign) tileEntity).signText[3];
+
+				if (StringUtils.containsIgnoreCase(line1.getUnformattedText(), "sky battle")) {
+
+					String numberString = line2.getUnformattedText();
+					if (numberString.length() > 0) {
+						int number = 0;
+
+						try {
+							number = Integer.parseInt(numberString);
+						} catch (NumberFormatException nfe) {
+							// bad data - set to sentinel
+						}
+
+						boolean foundServer = false;
+						if (number == 0) {
+
+						} else {
+							if (BlackGeckoServer.hasGame(BlackGeckoServer.firstSkyBattleServer + number - 1)) {
+
+								if (DimensionManager.isDimensionRegistered(BlackGeckoServer.firstSkyBattleServer + number - 1)) {
+									TeleporterPosition.teleport(event.entityPlayer, BlackGeckoServer.firstSkyBattleServer + number - 1, 0, 100, 0);
+									foundServer = true;
+								}
+
+							}
+						}
+						if (!foundServer) {
+							event.entityPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "WARNING! Failed to connect to "+EnumGameMode.FREE_BUILD + " " + number));
+							BlackGeckoServer.logger.warn("WARNING! Player " + event.entityPlayer.getName() + " failed to connect to "+EnumGameMode.FREE_BUILD + " " + number + " dim: " + (BlackGeckoServer.firstSkyBattleServer + number - 1));
+						}
+					}
+
+
+				}
+				
+				if (StringUtils.containsIgnoreCase(line1.getUnformattedText(), "free build")) {
+
+					String numberString = line2.getUnformattedText();
+					if (numberString.length() > 0) {
+						int number = 0;
+
+						try {
+							number = Integer.parseInt(numberString);
+						} catch (NumberFormatException nfe) {
+							// bad data - set to sentinel
+						}
+
+						boolean foundServer = false;
+						if (number == 0) {
+
+						} else {
+							//if (BlackGeckoServer.gameServer.get(BlackGeckoServer.firstFreeBuildServer + number - 1) != null) {
+
+								if (DimensionManager.isDimensionRegistered(BlackGeckoServer.firstFreeBuildServer + number - 1)) {
+									TeleporterPosition.teleport(event.entityPlayer, BlackGeckoServer.firstFreeBuildServer + number - 1, 0, 100, 0);
+									foundServer = true;
+								}
+
+							//}
+						}
+						if (!foundServer) {
+							event.entityPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "WARNING! Failed to connect to " + EnumGameMode.FREE_BUILD + " " + number));
+							BlackGeckoServer.logger.warn("WARNING! Player " + event.entityPlayer.getName() + " failed to connect to " + EnumGameMode.FREE_BUILD + " " + number + " dim: " + (BlackGeckoServer.firstSkyBattleServer + number - 1));
+						}
+					}
+
+
+				}
+
+			}
+
+		}
 		
-		if(event.world.getBlockState(event.pos).getBlock() == Blocks.wall_sign){
+	}
+	
+	public static void onPlayerPlaceEvent(PlaceEvent event){
+		
+		if(event.world.getBlockState(event.pos).getBlock() == Blocks.wall_sign){	
+			
 			TileEntity tileEntity = event.world.getTileEntity(event.pos);
 			
 			if(tileEntity!=null && tileEntity instanceof TileEntitySign){
-
+				
 				IChatComponent line1= ((TileEntitySign)tileEntity).signText[0];
 				IChatComponent line2= ((TileEntitySign)tileEntity).signText[1];
 				IChatComponent line3= ((TileEntitySign)tileEntity).signText[2];
 				IChatComponent line4= ((TileEntitySign)tileEntity).signText[3];
-								
 				
-				if(line1.getUnformattedText().contains("sky battle")){		            
+				if(line1.getUnformattedText().equalsIgnoreCase("[skybattle]")){
 					
-		            		            
-		            String numberString= line1.getUnformattedText().replace("sky battle ", ""); //removes "sky battle " from first line, leaving only the dim id
-		            if(numberString.length()>0){
-			            
-		            	int number=0;
-		            	
-		            	try
-		            	{
-		            		number = Integer.parseInt(numberString);
-		            	}
-		            	catch (NumberFormatException nfe)
-		            	{
-		            	   // bad data - set to sentinel
-		            	}
-		            	
-	            		boolean foundServer = false;
-		            	if(BlackGeckoServer.gameServer.get(BlackGeckoServer.firstSkyBattleServer+number-1)!= null){
-		            		
-				            if(DimensionManager.isDimensionRegistered(BlackGeckoServer.firstSkyBattleServer+number-1)){
-					            TeleporterPosition.teleport(event.entityPlayer, BlackGeckoServer.firstSkyBattleServer+number-1, 0, 100, 0);
-								bgsPlayer.setGameMode(EnumGameMode.SKY_BATTLE);
-					            foundServer=true;
-				            }
-		     
-
-		            	}
-		            	
-	            		if(!foundServer){
-	            			event.entityPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "WARNING! Failed to connect to SKYBATTLE" + number));
-	            			BlackGeckoServer.logger.warn("WARNING! Player " + event.entityPlayer.getName()+" failed to connect to SKYBATTLE" + number + " dim: " +(BlackGeckoServer.firstSkyBattleServer+number-1));
-	            		}
-		            }
+					
+					if(line2.getUnformattedText().equalsIgnoreCase("SkyWars") || line2.getUnformattedText().equalsIgnoreCase("MapName")){
+						
+						//Set Text vom Schild
+						line1 = IChatComponent.Serializer.jsonToComponent(Color.BLUE + "[SkyBattle]");
+						line2 = IChatComponent.Serializer.jsonToComponent(Color.BLACK + "BlackGecko");
+						line3 = IChatComponent.Serializer.jsonToComponent(Color.WHITE + "==========");
+						line4 = IChatComponent.Serializer.jsonToComponent(Color.GREEN + "SkyWars");
+					
+					}
+				
+				
 				}
+				
 			}
-			
 			
 		}
 		
-		
 	}
+	
 
 	public static void onLivingDeath(LivingDeathEvent event) {
 		event.entity.isDead=false;

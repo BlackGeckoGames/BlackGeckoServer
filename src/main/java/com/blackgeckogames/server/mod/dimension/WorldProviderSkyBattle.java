@@ -1,5 +1,7 @@
 package com.blackgeckogames.server.mod.dimension;
 
+import com.blackgeckogames.server.mod.gamemode.GameMode.EnumGameMode;
+
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderEnd;
@@ -37,7 +39,7 @@ public class WorldProviderSkyBattle extends WorldProvider
     
     public String getSaveFolder()
     {
-        return ("BlackGeckoServer/DIMENSIONS/SKY_BATTLE/SB_" + dimensionId);
+        return ("BGS/DIMENSIONS/"+EnumGameMode.SKY_BATTLE.toString()+"/WORLD_" + dimensionId);
     }
 
 

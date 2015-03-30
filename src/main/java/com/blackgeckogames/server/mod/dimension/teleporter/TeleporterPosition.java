@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -56,5 +57,10 @@ public class TeleporterPosition extends Teleporter {
 			}
 		}
 	}
+	
+	public static void teleport(EntityPlayer player, int dim, Vec3 pos) {
+		teleport(player, dim, pos.xCoord, pos.yCoord, pos.zCoord);
+	}
+
 
 }

@@ -1,3 +1,4 @@
 *!/src!/build.gradle!/eula.txt!/.gitignore!/gradlew!/gradlew.bat!/gradle
-!/world/BlackGeckoServer/MAPS
+!/BlackGeckoServer
+
 .DS_Store
